@@ -55,6 +55,14 @@ public class StoreThread extends Thread {
 				else if (lineFromServer.equals("ORDERS")) {
 					this.viewOrders(outgoing);
 				}
+				else if(lineFromServer.equals("SEND_INV"))
+				{
+					this.sendInventory(outgoing);
+				}
+				else if(lineFromServer.equals("GET_ORDER"))
+				{
+					this.getOrder(incoming);
+				}
 				else if(lineFromServer.equals("QUIT")) {
 					break;
 				}
@@ -215,15 +223,52 @@ public class StoreThread extends Thread {
 		}
 	}
 	
-	public void getOrder(BufferedReader incoming) {
-		
-		
-	}
-	
-	public void sendInventory(PrintWriter outgoing) {
-		
-	}
-	
+	public void sendInventory(PrintWriter outgoing)
+	    {
+	    	try 
+	    	{
+	    		HashMap<String,String> inventory = InventoryReader.readFile("inventory.xml");
+	        	int keys = inventory.keySet().size();
+	        	outgoing.println(""+keys);
+	        	outgoing.flush();
+	        	System.out.println("sent num of keys");
+	        	for (String key : inventory.keySet()) 
+	    		{
+	    			String toSend = ( key + "\t\t"+inventory.get(key));
+	    			outgoing.println(toSend);
+	    			outgoing.flush();
+	    		}
+	        	outgoing.close();
+	    	}catch(Exception e)
+	    	{
+	    		e.printStackTrace();
+	    	}
+	    	
+	    }
+	    synchronized public void getOrder(BufferedReader incoming)
+	    {
+	    	try 
+	    	{
+	    		int stockNum = Integer.parseInt(incoming.readLine());
+	        	int quantity = Integer.parseInt(incoming.readLine());
+	        	
+	        	FileWriter out=new FileWriter("orders.dat",true);
+	    		out.write(Integer.parseInt(userAccount.getID()));
+	    		System.out.println(userAccount.getID());
+	    		out.write(stockNum);
+	    		System.out.println(stockNum);
+	    		out.write(quantity);
+	    		System.out.println(quantity);
+	    		out.flush();
+	    		out.close();
+	    		System.out.println("order recorded\n");
+	    	}
+	    	catch(Exception e)
+	    	{
+	    		e.printStackTrace();
+	    	}
+	    }
+	   
 	public void viewOrders(PrintWriter outgoing) {
 		 HashMap<String, String> inventory = InventoryReader.readFile("inventory.xml");
 		 try {
