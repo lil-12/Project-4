@@ -16,7 +16,8 @@ public class CustomerScene extends SceneBasic {
 		changePasswordButton.setOnAction(e -> {
 			SceneManager.setChangePasswordScene();
 		});
-		
+		Button placeOrder = new Button("Place Order");
+		placeOrder.setOnAction(e-> SceneManager.setPlaceOrderScene());
 		Button logoutButton = new Button("Logout");
 		logoutButton.setOnAction(e -> {
 			logout();
@@ -27,6 +28,6 @@ public class CustomerScene extends SceneBasic {
 			SceneManager.setViewOrdersScene();
 		});
 		
-		this.root.getChildren().addAll(profileButton, viewOrdersButton, changePasswordButton, logoutButton);
+		this.root.getChildren().addAll(profileButton, viewOrdersButton, changePasswordButton, logoutButton,placeOrder);
 	}
 }
