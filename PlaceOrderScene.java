@@ -33,15 +33,15 @@ public class PlaceOrderScene extends SceneBasic
 	
 	public PlaceOrderScene()
 	{
-		super("Account List Menu");
+		super("Place Order Scene");
 		
-		Label title = new Label("Account List Scene");//large title
+		Label title = new Label("Place Order Scene");//large title
 		title.setFont(new Font(40));
 
 		Button customerMenu = new Button("CustomerMenu");//brings you back to adminMenu
 		Button logOut = new Button("Log out");//logs you out (but does not disconnect from server)
 		Button submit = new Button("Submit order");
-		Button quit = new Button("Quit");
+		
 		stockNumber = new TextField();
 		quantity = new TextField();
 		Label stockLabel = new Label("Stock Number:");
@@ -51,7 +51,7 @@ public class PlaceOrderScene extends SceneBasic
 		customerMenu.setOnAction(e-> SceneManager.setCustomerScene());
 		logOut.setOnAction(e-> SceneManager.setLoginScene());
 		submit.setOnAction(e->sendOrder());
-		quit.setOnAction(e->super.logout());
+		
 		
 		GridPane gp = new GridPane();
 		gp.setAlignment(Pos.CENTER);
@@ -64,15 +64,15 @@ public class PlaceOrderScene extends SceneBasic
 		
 		
 		HBox textfields = new HBox();
-		textfields.getChildren().addAll(stockLabel, stockNumber,new Label("\t"),quantLabel,quantity);
+		textfields.getChildren().addAll(stockLabel, stockNumber,new Label("\t"),quantLabel,quantity,submit);
 		
-		
-		root = new VBox(30, title,list,textfields, gp);
+	
+		root.getChildren().addAll(title,list,textfields,gp);
 		root.setAlignment(Pos.CENTER);
 
-		BorderPane bp = new BorderPane(root);
-		BorderPane.setAlignment(bp, Pos.CENTER);
-		//super.getScene = new Scene(bp, 400, 300);
+		//BorderPane bp = new BorderPane(root);
+		//BorderPane.setAlignment(bp, Pos.CENTER);
+		//super.scene = new Scene(bp, 400, 300);
 		
 	}
 	
