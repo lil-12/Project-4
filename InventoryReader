@@ -1,0 +1,76 @@
+//Lillian Davis
+//Project 4 Alpha version
+//November 12, 2021
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class InventoryReader 
+{	
+	//reads an XML file and returns a hashmap listing the products it find in the file
+	public static HashMap<String,String> readFile(String filename)
+	{
+		//HashMap to be filled
+		HashMap <String,String> inventory = new HashMap <String,String>();
+		try 
+		{
+			File file = new File(filename);
+			BufferedReader in = new BufferedReader(new FileReader(file));
+			String thisLine = removeTab(in.readLine());//one line at a time is read, with any tabs removed
+			while(thisLine!=null)//ends when the end of the file is reached
+			{
+				if(removeTab(thisLine).equals("<PRODUCT>"))//begins looking for the data belonging to one product
+				{
+					thisLine = removeTab(in.readLine());
+					String stockNumber= "";//stock number that is read
+					String description="";//description that is read
+					
+					while(!thisLine.equals("</PRODUCT>"))
+					{
+						if(thisLine.equals("<stockNumber>"))//looks for stock number to save
+						{
+							thisLine = removeTab(in.readLine());
+							while(!thisLine.equals("</stockNumber>"))
+							{
+								stockNumber = stockNumber.concat(thisLine);
+								thisLine = removeTab(in.readLine());
+							}
+						}
+						else if(thisLine.equals("<description>"))//looks for description to save
+						{
+							thisLine = removeTab(in.readLine());
+							while(!thisLine.equals("</description>"))
+							{
+								description=description.concat(thisLine);
+								thisLine = removeTab(in.readLine());
+							}
+						}
+						thisLine = removeTab(in.readLine());
+					}
+					if(!description.equals("")&&!stockNumber.equals(""))//only adds data to hashmap if there is a description and a stock number
+					{
+						inventory.put(stockNumber, description);
+					}	
+				}	
+				thisLine = removeTab(in.readLine());
+			}
+			in.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return inventory;	
+	}
+	
+	//this method finds the last "\t" character and removes it and every character before it from a string. 
+	private static String removeTab(String string)
+	{
+		if(string == null)
+			return string;
+		else return string.substring(string.lastIndexOf("\t")+1);
+	}
+		
+}
