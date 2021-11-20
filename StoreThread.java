@@ -40,7 +40,9 @@ public class StoreThread extends Thread {
 			while(true) {
 				String lineFromServer = incoming.readLine();
 				System.out.println(lineFromServer);
-				if(lineFromServer.equals("LOGIN")) {
+				if(lineFromServer == null)
+				{}
+				else if(lineFromServer.equals("LOGIN")) {
 					this.login(accounts, incoming, outgoing);
 				}
 				else if(lineFromServer.equals("LIST")) {
@@ -76,6 +78,7 @@ public class StoreThread extends Thread {
 	
 	public synchronized void login(HashMap<String, Account> accounts, BufferedReader incoming, PrintWriter outgoing) {
 		String recieved;
+		System.out.println("trying to log in");
 		try {
 			recieved = incoming.readLine();
 			
@@ -83,23 +86,25 @@ public class StoreThread extends Thread {
 			if(info.length < 2) {
 				outgoing.println("USERNAME");
 				outgoing.flush();
+				System.out.println("returning");
 				return;
 			}
 			String submittedUsername = info[0];
 			String submittedPassword = info[1];
+			//System.out.print
 			for(String key : accounts.keySet()) {
 				Account acc = accounts.get(key);
 				if (submittedUsername.equals(acc.getUsername()) && acc.verifyPassword(submittedPassword)) {
 					//correct
-					//System.out.println(acc.getUsername() + " " + acc.getPassword());
+					System.out.println(acc.getUsername() + " " + acc.getPassword());
 					if (acc instanceof AdminAccount) 
 						{
 						outgoing.println("ADMIN");
-						//System.out.println("sent admin");
+						System.out.println("sent admin");
 						}
 					else if (acc instanceof CustomerAccount) {
 						outgoing.println("CLIENT");
-						//System.out.println("sent clietn");
+						System.out.println("sent clietn");
 					}
 					outgoing.flush();
 					userAccount = acc;
@@ -238,7 +243,6 @@ public class StoreThread extends Thread {
 	    			outgoing.println(toSend);
 	    			outgoing.flush();
 	    		}
-	        	outgoing.close();
 	    	}catch(Exception e)
 	    	{
 	    		e.printStackTrace();
@@ -260,7 +264,6 @@ public class StoreThread extends Thread {
 	    		out.write(quantity);
 	    		System.out.println(quantity);
 	    		out.flush();
-	    		out.close();
 	    		System.out.println("order recorded\n");
 	    	}
 	    	catch(Exception e)
@@ -304,3 +307,4 @@ public class StoreThread extends Thread {
 		}
 	}
 }
+
