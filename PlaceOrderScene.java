@@ -26,7 +26,7 @@ import javafx.scene.layout.GridPane;
 public class PlaceOrderScene extends SceneBasic
 {
 
-	VBox root = new VBox();//container holding most elements of the scene
+	//VBox root = new VBox();//container holding most elements of the scene
 	Label list = new Label("");//list of accounts to be displayed
 	TextField stockNumber;
 	TextField quantity;
@@ -41,7 +41,7 @@ public class PlaceOrderScene extends SceneBasic
 		Button customerMenu = new Button("CustomerMenu");//brings you back to adminMenu
 		Button logOut = new Button("Log out");//logs you out (but does not disconnect from server)
 		Button submit = new Button("Submit order");
-		
+		Button quit = new Button("Quit");
 		stockNumber = new TextField();
 		quantity = new TextField();
 		Label stockLabel = new Label("Stock Number:");
@@ -51,7 +51,7 @@ public class PlaceOrderScene extends SceneBasic
 		customerMenu.setOnAction(e-> SceneManager.setCustomerScene());
 		logOut.setOnAction(e-> SceneManager.setLoginScene());
 		submit.setOnAction(e->sendOrder());
-		
+		quit.setOnAction(e->super.logout());
 		
 		GridPane gp = new GridPane();
 		gp.setAlignment(Pos.CENTER);
@@ -72,7 +72,7 @@ public class PlaceOrderScene extends SceneBasic
 
 		BorderPane bp = new BorderPane(root);
 		BorderPane.setAlignment(bp, Pos.CENTER);
-		super.scene = new Scene(bp, 400, 300);
+		//super.getScene = new Scene(bp, 400, 300);
 		
 	}
 	
