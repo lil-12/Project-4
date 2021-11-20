@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -33,7 +32,7 @@ public class PlaceOrderScene extends SceneBasic
 	
 	public PlaceOrderScene()
 	{
-		super("Place Order Scene");
+		super("");
 		
 		Label title = new Label("Place Order Scene");//large title
 		title.setFont(new Font(40));
@@ -60,8 +59,7 @@ public class PlaceOrderScene extends SceneBasic
 		
 		gp.add(customerMenu, 0, 2);
 		gp.add(logOut, 1, 2);
-		gp.add(quit, 3, 2);//button from SceneBasic that cuts connections and returns to loginScene
-		
+
 		
 		HBox textfields = new HBox();
 		textfields.getChildren().addAll(stockLabel, stockNumber,new Label("\t"),quantLabel,quantity,submit);
@@ -69,10 +67,6 @@ public class PlaceOrderScene extends SceneBasic
 	
 		root.getChildren().addAll(title,list,textfields,gp);
 		root.setAlignment(Pos.CENTER);
-
-		//BorderPane bp = new BorderPane(root);
-		//BorderPane.setAlignment(bp, Pos.CENTER);
-		//super.scene = new Scene(bp, 400, 300);
 		
 	}
 	
@@ -86,7 +80,7 @@ public class PlaceOrderScene extends SceneBasic
 			out.flush();
 			out.println(stockNumber.getText());
 			out.println(quantity.getText());
-			out.close();
+			out.flush();
 			stockNumber.setText("");
 			quantity.setText("");
 		} 
@@ -101,24 +95,23 @@ public class PlaceOrderScene extends SceneBasic
 		try 
 		{
 			Socket socket = SceneManager.getSocket();
+			PrintWriter out = new PrintWriter(socket.getOutputStream());
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			PrintWriter out = new PrintWriter(SceneManager.getSocket().getOutputStream());
-			out.println("GET_INV");//signal
+			out.println("SEND_INV");//signal
 			out.flush();
-			out.close();
+			System.out.println("flushed");
 			int numOfMessages = Integer.parseInt(in.readLine());
+			System.out.println("read num of messages");
 			String listString = new String("Stock Number\tDescription\n" );
 			for(int i=0;i<numOfMessages;i++)
 			{
 				listString = listString.concat(in.readLine()+"\n");
 			}
-			list = new Label();
 			list.setText(listString);
-			in.close();
-			//root.add(list, 0, 0);		
 		} 
 		catch (Exception e) 
 		{	
+			e.printStackTrace();
 		}
 	}
 }
