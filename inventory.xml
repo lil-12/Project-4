@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<INVENTORY>
+	<PRODUCT>
+		<stockNumber>
+			45
+		</stockNumber>
+		<description>
+			book
+		</description>
+	</PRODUCT>
+	<PRODUCT>
+		<stockNumber>
+			91
+		</stockNumber>
+		<description>
+			car
+		</description>
+	</PRODUCT>
+</INVENTORY>
+
+
